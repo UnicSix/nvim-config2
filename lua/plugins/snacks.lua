@@ -208,6 +208,9 @@ return {
                     vim.print = _G.dd
                 end
 
+                vim.api.nvim_set_hl(0, "SnacksPickerDir", {fg="#ababab"})
+                vim.api.nvim_set_hl(0, "SnacksPickerMatch", {fg="#00abab"})
+
                 -- Create some toggle mappings
                 Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>us")
                 Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")
