@@ -148,8 +148,13 @@ return {
         },
         { "<leader>gg", function() Snacks.lazygit() end,                                    desc = "Lazygit" },
         { "<leader>un", function() Snacks.notifier.hide() end,                              desc = "Dismiss All Notifications" },
-        { "<c-n>",      function() Snacks.terminal() end,                                   desc = "Toggle Terminal" },
-        { "<c-f>",      function() Snacks.terminal(nil, { win = { style = "float" } }) end, desc = "Float Terminal" },
+        -- { "<c-n>",      function() 
+        --     local root = vim.fs.root(0, { ".git", "CMakeLists.txt", "package.json" })
+        --     Snacks.terminal.toggle(nil, { cwd = root }) 
+        --     end,                                   desc = "Vertical Terminal" },
+        -- { "<c-f>",      function() 
+        --     local root = vim.fs.root(0, { ".git", "CMakeLists.txt", "package.json" })
+        --     Snacks.terminal.toggle(nil, { win = { style = "float" }, cwd = root }) end, desc = "Float Terminal" },
         {
             "]]",
             function() Snacks.words.jump(vim.v.count1) end,

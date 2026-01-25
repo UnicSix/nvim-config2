@@ -20,6 +20,7 @@ require("lazy").setup({
     require("plugins.tiny_diagnotic"),
     require("plugins.nvim_cmp"),
     require("plugins.trouble"),
+    require("plugins.toggleterm"),
     {
         'paulo-granthon/hyper.nvim',
         config = function()
