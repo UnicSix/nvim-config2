@@ -6,7 +6,7 @@ return {
     opts = {
         bigfile = { enabled = true },
         dashboard = {
-            enabled = true,
+            enabled = false,
             sections = {
                 { pane = 2, icon = " ", title = "Keymaps", section = "keys", indent = 2, padding = 1 },
                 { pane = 2, icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
@@ -22,13 +22,12 @@ return {
             },
         },
         explorer = { enabled = false },
-        indent = { enabled = true },
+        indent = { enabled = false },
         input = { enabled = true },
         notifier = {
             enabled = true,
             timeout = 3000,
         },
-        picker = { enabled = true },
         quickfile = { enabled = true },
         scope = { enabled = true },
         scroll = { enabled = false },
@@ -42,12 +41,23 @@ return {
                 position = "right",
                 width = 0.4,
             }
-        }
+        },
+        picker = {
+            enabled = false,
+            win = {
+                input = {
+                    keys = {
+                        ["<Tab>"] = { "list_down", mode = { "i", "n" } },
+                        ["<S-Tab>"] = { "list_up", mode = { "i", "n" } },
+                    }
+                }
+            }
+        },
     },
 
     keys = {
         -- Top Pickers & Explorer
-        { "<leader><space>",  function() Snacks.picker.smart() end,                                   desc = "Smart Find Files" },
+        { "<leader>sf",  function() Snacks.picker.smart() end,                                   desc = "Smart Find Files" },
         { "<leader>,",        function() Snacks.picker.buffers() end,                                 desc = "Buffers" },
         { "<leader>/",        function() Snacks.picker.grep() end,                                    desc = "Grep" },
         { "<leader>:",        function() Snacks.picker.command_history() end,                         desc = "Command History" },
@@ -56,7 +66,7 @@ return {
         -- find
         { "<leader><leader>", function() Snacks.picker.buffers() end,                                 desc = "Buffers" },
         { "<leader>fc",       function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File" },
-        { "<leader>sf",       function() Snacks.picker.files({ cwd = vim.fn.expand("%:p:h") }) end,                                   desc = "Find Files" },
+        -- { "<leader>sf",       function() Snacks.picker.files({ cwd = vim.fn.expand("%:p:h") }) end,                                   desc = "Find Files" },
         { "<leader>fg",       function() Snacks.picker.git_files() end,                               desc = "Find Git Files" },
         { "<leader>fp",       function() Snacks.picker.projects() end,                                desc = "Projects" },
         { "<leader>fr",       function() Snacks.picker.recent() end,                                  desc = "Recent" },
@@ -109,6 +119,7 @@ return {
         { "gy",               function() Snacks.picker.lsp_type_definitions() end,                    desc = "Goto T[y]pe Definition" },
         { "gai",              function() Snacks.picker.lsp_incoming_calls() end,                      desc = "C[a]lls Incoming" },
         { "gao",              function() Snacks.picker.lsp_outgoing_calls() end,                      desc = "C[a]lls Outgoing" },
+        { "<leader>rn",       function() vim.lsp.buf.rename() end,                                    desc = "LSP [R]ename" },
         -- { "<leader>ss",       function() Snacks.picker.lsp_symbols() end,                             desc = "LSP Symbols" },
         -- { "<leader>sS",       function() Snacks.picker.lsp_workspace_symbols() end,                   desc = "LSP Workspace Symbols" },
         -- {
@@ -133,26 +144,26 @@ return {
         -- },
 
         -- Other
-        { "<leader>z",  function() Snacks.zen() end,                   desc = "Toggle Zen Mode" },
-        { "<leader>Z",  function() Snacks.zen.zoom() end,              desc = "Toggle Zoom" },
-        { "<leader>.",  function() Snacks.scratch() end,               desc = "Toggle Scratch Buffer" },
-        { "<leader>S",  function() Snacks.scratch.select() end,        desc = "Select Scratch Buffer" },
-        { "<leader>n",  function() Snacks.notifier.show_history() end, desc = "Notification History" },
-        { "<leader>bd", function() Snacks.bufdelete() end,             desc = "Delete Buffer" },
-        { "<leader>cR", function() Snacks.rename.rename_file() end,    desc = "Rename File" },
+        { "<leader>z",        function() Snacks.zen() end,                                            desc = "Toggle Zen Mode" },
+        { "<leader>Z",        function() Snacks.zen.zoom() end,                                       desc = "Toggle Zoom" },
+        { "<leader>.",        function() Snacks.scratch() end,                                        desc = "Toggle Scratch Buffer" },
+        { "<leader>S",        function() Snacks.scratch.select() end,                                 desc = "Select Scratch Buffer" },
+        { "<leader>n",        function() Snacks.notifier.show_history() end,                          desc = "Notification History" },
+        { "<leader>bd",       function() Snacks.bufdelete() end,                                      desc = "Delete Buffer" },
+        { "<leader>cR",       function() Snacks.rename.rename_file() end,                             desc = "Rename File" },
         {
             "<leader>gB",
             function() Snacks.gitbrowse() end,
             desc = "Git Browse",
             mode = { "n", "v" }
         },
-        { "<leader>gg", function() Snacks.lazygit() end,                                    desc = "Lazygit" },
-        { "<leader>un", function() Snacks.notifier.hide() end,                              desc = "Dismiss All Notifications" },
-        -- { "<c-n>",      function() 
+        { "<leader>gg", function() Snacks.lazygit() end,       desc = "Lazygit" },
+        { "<leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
+        -- { "<c-n>",      function()
         --     local root = vim.fs.root(0, { ".git", "CMakeLists.txt", "package.json" })
-        --     Snacks.terminal.toggle(nil, { cwd = root }) 
+        --     Snacks.terminal.toggle(nil, { cwd = root })
         --     end,                                   desc = "Vertical Terminal" },
-        -- { "<c-f>",      function() 
+        -- { "<c-f>",      function()
         --     local root = vim.fs.root(0, { ".git", "CMakeLists.txt", "package.json" })
         --     Snacks.terminal.toggle(nil, { win = { style = "float" }, cwd = root }) end, desc = "Float Terminal" },
         {
@@ -208,8 +219,9 @@ return {
                     vim.print = _G.dd
                 end
 
-                vim.api.nvim_set_hl(0, "SnacksPickerDir", {fg="#ababab"})
-                vim.api.nvim_set_hl(0, "SnacksPickerMatch", {fg="#00abab"})
+                vim.api.nvim_set_hl(0, "SnacksPickerDir", { fg = "#ababab" })
+                vim.api.nvim_set_hl(0, "SnacksPickerMatch", { fg = "#00abab" })
+                vim.api.nvim_set_hl(0, "SnacksDashboardDir", { fg = "#00abab" })
 
                 -- Create some toggle mappings
                 Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>us")

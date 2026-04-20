@@ -9,7 +9,7 @@ return {
             shade_filetype = {},
             -- highlights = require("rose-pine.plugins.toggleterm")
         })
-        vim.keymap.set('n', '<C-t>', ':ToggleTerm direction=vertical size=60<CR>',
+        vim.keymap.set('n', '<C-p>', ':ToggleTerm direction=vertical size=60<CR>',
             { noremap = true })
         vim.keymap.set('n', '<C-n>', ':ToggleTerm direction=horizontal size=10<CR>',
             { noremap = true })

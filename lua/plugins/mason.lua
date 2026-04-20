@@ -12,7 +12,6 @@ return {
     config = function()
         require("mason").setup()
 
-        -- Configure clangd
         vim.lsp.config["clangd"] = {
             cmd = { "clangd" },
             filetypes = { "c", "cpp", "h", "hpp", "cc" },
